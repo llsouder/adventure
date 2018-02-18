@@ -16,4 +16,5 @@
          :height "600"
          :viewBox "0 0 800 600"
          :xmlns "http://www.w3.org/2000/svg"}
-   (tile/colorBlock "brown" 100 100)])
+   (tile/colorBlock "brown" 100 100)
+   (tile/test-board)])
