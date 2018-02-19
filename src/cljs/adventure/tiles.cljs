@@ -1,13 +1,23 @@
 (ns adventure.tiles)
 
 
-(def board {;;:size-x 5
-            ;;:size-y 4
-            ;;:tile-size 50
-            :tiles [["red" "red" "red" "red" "red"]
-                    ["gray" "gray" "gray" "red" "red"]
-                    ["gray" "red" "gray" "red" "red"]
-                    ["gray" "red" "gray" "gray" "gray"]]})
+(def board {:tiles [["x" "x" "x" "x" "x" "g" "g"]
+                    ["g" "g" "g" "x" "x" "g" "x"]
+                    ["g" "x" "g" "x" "x" "g" "x"]
+                    ["g" "x" "g" "x" "x" "g" "x"]
+                    ["g" "x" "g" "x" "x" "g" "x"]
+                    ["g" "x" "g" "g" "g" "g" "x"]
+                    ["x" "x" "x" "x" "x" "x" "x"]
+                    ]})
+(defn pick
+  "Pick color using a single character.  This makes the board data more readable."
+  [abbr]
+  (case abbr
+    "r" "red"
+    "g" "gray"
+    "x" "green" ;;default
+    abbr))
+
 (defn colorBlock
   "Create svg rectangle vector at location xy with the color string specified by the arg."
   [color x y]
@@ -21,7 +31,7 @@
 (defn draw-row
   [row row-idx]
   (let [y (* row-idx 50)]
-  (map-indexed (fn [idx color] (colorBlock color (* 50 idx) y)) row)))
+  (map-indexed (fn [idx color] (colorBlock (pick color) (* 50 idx) y)) row)))
 
 (defn draw-board
   "see map above"
