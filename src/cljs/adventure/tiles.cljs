@@ -31,11 +31,12 @@
 (defn colorBlock
   "Create svg rectangle vector at location xy with the color string specified by the arg."
   [color x y]
-   [:rect {:width WSTR
-           :height HSTR 
-           :x x
-           :y y
-           :style {:fill color :stroke-width 3 :stroke "rgb(0,0,0)"}}
+  [:rect {:key (str x "," y)
+          :width WSTR
+          :height HSTR 
+          :x x
+          :y y
+          :style {:fill color :stroke-width 3 :stroke "rgb(0,0,0)"}}
     "Sorry, your browser does not support inline SVG."])
 
 (defn draw-row
