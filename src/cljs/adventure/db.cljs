@@ -1,4 +1,5 @@
 (ns adventure.db)
 
 (def default-db
-  {:name "re-frame"})
+  {:name "Adventure"
+   :location {:x 0 :y 5}})

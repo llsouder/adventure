@@ -1,5 +1,9 @@
 (ns adventure.tiles)
 
+(def W 50)
+(def WSTR (str W))
+(def H 50)
+(def HSTR (str H))
 
 (def board {:tiles [["x" "x" "x" "x" "x" "g" "g"]
                     ["g" "g" "g" "x" "x" "g" "x"]
@@ -21,8 +25,8 @@
 (defn colorBlock
   "Create svg rectangle vector at location xy with the color string specified by the arg."
   [color x y]
-   [:rect {:width "50"
-           :height "50"
+   [:rect {:width WSTR
+           :height HSTR 
            :x x
            :y y
            :style {:fill color :stroke-width 3 :stroke "rgb(0,0,0)"}}
@@ -30,8 +34,8 @@
 
 (defn draw-row
   [row row-idx]
-  (let [y (* row-idx 50)]
-  (map-indexed (fn [idx color] (colorBlock (pick color) (* 50 idx) y)) row)))
+  (let [y (* row-idx H)]
+  (map-indexed (fn [idx color] (colorBlock (pick color) (* W idx) y)) row)))
 
 (defn draw-board
   "see map above"
@@ -40,3 +44,19 @@
   (map-indexed (fn [idx row] (draw-row row idx)) tiles)))
 
 (defn test-board [] (draw-board board))
+
+(defn drawPlayerAt
+  "return the player svg on the board"
+  [x y]
+  [:circle {:cx x
+            :cy y
+            :r (/ W 2)
+            :stroke "black"
+            :stroke-width "3"
+            :fill "red"}])
+
+(defn drawPlayer
+  [location]
+  (let [x (+ (* W (:x location)) (/ W 2))
+        y (+ (* H (:y location)) (/ H 2))]
+    (drawPlayerAt x y)))
