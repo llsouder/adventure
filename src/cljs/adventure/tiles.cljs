@@ -1,4 +1,5 @@
-(ns adventure.tiles)
+(ns adventure.tiles
+  (:require [re-frame.core :as re-frame]))
 
 (def W 50)
 (def WSTR (str W))
@@ -67,3 +68,31 @@
   (let [x (+ (* W (:x location)) (/ W 2))
         y (+ (* H (:y location)) (/ H 2))]
     (drawPlayerAt x y)))
+
+(defn check-board
+  [x y board]
+  (let [tiles (:tiles board)
+        tilerow  (tiles y)
+        tile (tilerow x)]
+    (= tile "g")))
+
+(defn checkandupdate
+  "the db from the event, the axis is :x or :y, and f is inc or dec."
+  [db axis f]
+  (let [newdb (update-in db [:location axis] f)] 
+    (if (check-board (get-in newdb [:location :x])
+                     (get-in newdb [:location :y])
+                     board)
+      newdb
+      db)))
+
+(re-frame/reg-event-db
+ :location
+ (fn  [db [_ keycode]]
+   (case keycode
+     (87 75) (checkandupdate db :y dec) ;;up w k
+     (83 74) (checkandupdate db :y inc) ;;down s j
+     (68 76) (checkandupdate db :x inc) ;;right d l
+     (65 72) (checkandupdate db :x dec) ;;left a h
+     (do (println (str "unsupported " keycode))
+         db))))
