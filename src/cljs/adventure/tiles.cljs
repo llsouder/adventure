@@ -11,7 +11,13 @@
                     ["g" "x" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "g" "g" "g" "x"]
-                    ["x" "x" "x" "x" "x" "x" "x"]
+                    ["g" "x" "x" "x" "x" "x" "x"]
+                    ["g" "g" "g" "g" "x" "x" "x"]
+                    ["g" "g" "g" "g" "x" "x" "x"]
+                    ["g" "g" "g" "g" "x" "x" "x"]
+                    ["g" "g" "g" "g" "x" "x" "x"]
+                    ["g" "g" "g" "g" "x" "x" "x"]
+                    ["g" "g" "g" "g" "x" "x" "x"]
                     ]})
 (defn pick
   "Pick color using a single character.  This makes the board data more readable."
