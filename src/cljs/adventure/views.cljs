@@ -8,7 +8,6 @@
   [event]
   (let [key-code (.-keyCode event)]
     (do
-      (re-frame/dispatch [:keypress key-code])
       (re-frame/dispatch [:location key-code]))))
 
 (defn title []
@@ -17,8 +16,12 @@
      :label @name
      :level :level1]))
 
+(def bump (js/Audio. "bump.wav"))
+
 (defn main-panel []
   (.addEventListener js/document "keydown"  action)
+  (if (= (:action @(re-frame/subscribe [::subs/location])) "bump")
+    (.play bump))
   [:div
     (title)
     [:svg {:width "800"
@@ -27,4 +30,4 @@
            :xmlns "http://www.w3.org/2000/svg"}
      (tile/test-board)
      (tile/drawPlayer @(re-frame/subscribe [::subs/location]))]
-   [:h3 @(re-frame/subscribe [::subs/keypress])]])
+   [:h3 (:action @(re-frame/subscribe [::subs/location]))]])

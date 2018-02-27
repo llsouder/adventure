@@ -79,12 +79,12 @@
 (defn checkandupdate
   "the db from the event, the axis is :x or :y, and f is inc or dec."
   [db axis f]
-  (let [newdb (update-in db [:location axis] f)] 
+  (let [newdb (update-in (update-in db [:location axis] f) [:location :action] #(str "none"))] 
     (if (check-board (get-in newdb [:location :x])
                      (get-in newdb [:location :y])
                      board)
       newdb
-      db)))
+      (update-in db [:location :action] #(str "bump")))))
 
 (re-frame/reg-event-db
  :location
