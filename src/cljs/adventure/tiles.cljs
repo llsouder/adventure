@@ -6,7 +6,7 @@
 (def H 50)
 (def HSTR (str H))
 
-(def board {:tiles [["x" "x" "x" "x" "x" "g" "g"]
+(def tiles         [["x" "x" "x" "x" "x" "g" "g"]
                     ["g" "g" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
@@ -18,8 +18,12 @@
                     ["g" "g" "g" "g" "x" "x" "x"]
                     ["g" "g" "g" "g" "x" "x" "x"]
                     ["g" "g" "g" "g" "x" "x" "x"]
-                    ["g" "g" "g" "g" "x" "x" "x"]
-                    ]})
+                    ])
+
+(def board {:x-size (count (tiles 1))
+            :y-size (count tiles)
+            :tiles tiles})
+
 (defn pick
   "Pick color using a single character.  This makes the board data more readable."
   [abbr]
@@ -76,15 +80,28 @@
         tile (tilerow x)]
     (= tile "g")))
 
+(defn valid-move?
+  "Return true if new position is on the board, i.e. coords are >= 0."
+  [location axis f board]
+  (let [updatedmap (update-in location [axis] f)
+        newvals (vals (dissoc updatedmap :action))
+        positive (every? #(>= % 0) newvals)
+        x (:x updatedmap)
+        y (:y updatedmap)
+        withingrid (and (< x (:x-size board)) (< y (:y-size board)))]
+    (and positive withingrid)))
+
 (defn checkandupdate
   "the db from the event, the axis is :x or :y, and f is inc or dec."
   [db axis f]
-  (let [newdb (update-in (update-in db [:location axis] f) [:location :action] #(str "none"))] 
-    (if (check-board (get-in newdb [:location :x])
-                     (get-in newdb [:location :y])
-                     board)
+  (if (valid-move? (:location db) axis f board)
+    (let [newdb (update-in (update-in db [:location axis] f) [:location :action] #(str "none"))]
+      (if (check-board (get-in newdb [:location :x])
+                       (get-in newdb [:location :y])
+                       board)
       newdb
-      (update-in db [:location :action] #(str "bump")))))
+      (update-in db [:location :action] #(str "bump"))))
+  (update-in db [:location :action] #(str "error"))))
 
 (re-frame/reg-event-db
  :location
