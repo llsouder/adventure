@@ -2,4 +2,4 @@
 
 (def default-db
   {:name "Adventure"
-   :location {:x 0 :y 5 :action "none"}})
+   :location {:x 6 :y 0 :action "none"}})
