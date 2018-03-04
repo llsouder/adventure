@@ -15,11 +15,10 @@
               "Sorry, your browser does not support inline SVG."]
              (tile/colorBlock "rgb(100,100,100)" 10 20)))))
 
-(def testboard {:tiles [["x" "x" "x"]
-                        ["x" "x" "x"]
-                        ["x" "x" "x"]]
-                :x-size 3
-                :y-size 3})
+(def testboard (tile/make-board
+                [["x" "x" "x"]
+                 ["x" "x" "x"]
+                 ["x" "x" "x"]]))
 
 (t/deftest valid-move-test
   (t/testing "keep it on the board! stop the invalid indexes."
@@ -33,3 +32,7 @@
     (t/is (= true (tile/valid-move? {:x 2 :y 2} :y dec testboard)))
     (t/is (= false (tile/valid-move? {:x 2 :y 2} :x inc testboard)))
     (t/is (= false (tile/valid-move? {:x 2 :y 2} :y inc testboard)))))
+
+(t/run-tests)
+
+

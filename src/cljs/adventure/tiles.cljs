@@ -17,12 +17,15 @@
                     ["g" "g" "g" "g" "x" "x" "x"]
                     ["g" "g" "g" "g" "x" "x" "x"]
                     ["g" "g" "g" "g" "x" "x" "x"]
-                    ["g" "g" "g" "g" "x" "x" "x"]
-                    ])
+                    ["g" "g" "g" "g" "x" "x" "x"]])
 
-(def board {:x-size (count (tiles 1))
-            :y-size (count tiles)
-            :tiles tiles})
+(defn make-board
+  [tiles]
+  {:x-size (count (tiles 1))
+   :y-size (count tiles)
+   :tiles tiles})
+
+(def board (make-board tiles))
 
 (defn pick
   "Pick color using a single character.  This makes the board data more readable."
