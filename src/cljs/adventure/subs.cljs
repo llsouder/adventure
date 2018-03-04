@@ -15,3 +15,8 @@
  ::location
  (fn [db]
    (:location db)))
+
+(re-frame/reg-sub
+ ::active-panel
+ (fn [db _]
+   (:active-panel db)))

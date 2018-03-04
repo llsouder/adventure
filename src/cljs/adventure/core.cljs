@@ -3,6 +3,7 @@
             [re-frame.core :as re-frame]
             [adventure.events :as events]
             [adventure.views :as views]
+            [adventure.routes :as routes]
             [adventure.config :as config]))
 
 (defn dev-setup []
@@ -16,7 +17,7 @@
                   (.getElementById js/document "app")))
 
 (defn ^:export init []
+  (routes/app-routes)
   (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)
   (mount-root))
- 

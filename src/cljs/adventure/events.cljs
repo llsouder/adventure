@@ -11,3 +11,9 @@
  :keypress
  (fn  [db [_ keycode]]
    (assoc db :keypress keycode)))
+
+(re-frame/reg-event-db
+ ::set-active-panel
+ (fn [db [_ active-panel]]
+   (assoc db :active-panel active-panel)))
+

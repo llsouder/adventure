@@ -18,7 +18,10 @@
 
 (def bump (js/Audio. "bump.wav"))
 
-(defn main-panel []
+(defn about-panel []
+  [:div [:h1 "About"]])
+
+(defn home-panel []
   (.addEventListener js/document "keydown"  action)
   (if (= (:action @(re-frame/subscribe [::subs/location])) "bump")
     (.play bump))
@@ -31,3 +34,16 @@
      (tile/test-board)
      (tile/drawPlayer @(re-frame/subscribe [::subs/location]))]
    [:h3 (:action @(re-frame/subscribe [::subs/location]))]])
+
+(defn- panels [panel-name]
+  (case panel-name
+    :home-panel [home-panel]
+    :about-panel [about-panel]
+    [home-panel]))
+
+(defn main-panel []
+  (let [active-panel (re-frame/subscribe [::subs/active-panel])]
+    (println active-panel)
+    [re-com/v-box
+     :height "100%"
+     :children [[panels @active-panel]]]))
