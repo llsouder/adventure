@@ -2,6 +2,7 @@
   (:require [re-frame.core :as re-frame]
             [re-com.core :as re-com]
             [adventure.subs :as subs]
+            [adventure.guess :as guess]
             [adventure.tiles :as tile]))
 
 (defn action
@@ -39,6 +40,7 @@
   (case panel-name
     :home-panel [home-panel]
     :about-panel [about-panel]
+    :puzzle-1 [guess/page]
     [home-panel]))
 
 (defn main-panel []

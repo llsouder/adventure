@@ -26,6 +26,7 @@
     (re-frame/dispatch [::events/set-active-panel :about-panel]))
 
   (defroute "/puzzle/:id" {:as params}
-    (js/console.log (str "Puzzle: " (:id params)))))
+    (println "help" (keyword (str "puzzle-" (:id params))))
+    (re-frame/dispatch [::events/set-active-panel (keyword (str "puzzle-" (:id params)))])))
 
 (hook-browser-navigation!)
