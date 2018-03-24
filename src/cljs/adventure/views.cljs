@@ -45,7 +45,6 @@
 
 (defn main-panel []
   (let [active-panel (re-frame/subscribe [::subs/active-panel])]
-    (println active-panel)
     [re-com/v-box
      :height "100%"
      :children [[panels @active-panel]]]))

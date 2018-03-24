@@ -1,5 +1,6 @@
 (ns adventure.guess
   (:require [re-com.core :as re-com]
+            [re-frame.core :as re-frame] ;;need re-frame for :ontouchstart to work.
             [reagent.core :as reagent]))
 
 
@@ -13,6 +14,13 @@
       (println "you win"))
     (println "nope" answer @value)))
 
+(defn flip-tags []
+  [:div {:class "flip-container" :ontouchstart "this.classList.toggle('hover')"}
+   [:div {:class "flipper"}
+   [:div {:class "front"}
+    [:h1 "Front"]]
+   [:div {:class "back"}
+    [:h1 "Back"]]]])
 
 (defn page []
   (let [answer (rand-int 10)
@@ -20,6 +28,7 @@
   [:div [:h1 "Quick Guess the number"]
    [re-com/throbber
     :size :large]
+   (flip-tags)
    [re-com/input-text
     :on-change #(reset! text-val %)
     :model text-val
