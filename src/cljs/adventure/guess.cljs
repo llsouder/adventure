@@ -14,21 +14,25 @@
       (println "you win"))
     (println "nope" answer @value)))
 
-(defn flip-tags []
-  [:div {:class "flip-container" :ontouchstart "this.classList.toggle('hover')"}
+(defn flip-tags [text]
+  [:div {:class "flip-container" :onClick #(set-hash! "/about") }
    [:div {:class "flipper"}
    [:div {:class "front"}
-    [:h1 "Front"]]
+    [:h1 text]]
    [:div {:class "back"}
     [:h1 "Back"]]]])
 
 (defn page []
   (let [answer (rand-int 10)
         text-val (reagent/atom "")]
-  [:div [:h1 "Quick Guess the number"]
+    (set-hash! "/puzzle-1")
+    [:div [:h1 "Find your way out."]
    [re-com/throbber
     :size :large]
-   (flip-tags)
+     [re-com/h-box
+      :children [(flip-tags 1)
+                 (flip-tags 2)
+                 (flip-tags 3)]]
    [re-com/input-text
     :on-change #(reset! text-val %)
     :model text-val
