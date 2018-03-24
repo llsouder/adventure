@@ -1,8 +1,10 @@
 (ns adventure.views
   (:require [re-frame.core :as re-frame]
             [re-com.core :as re-com]
+            [reagent.core :as reagent]
             [adventure.subs :as subs]
             [adventure.guess :as guess]
+            [adventure.events :as events]
             [adventure.tiles :as tile]))
 
 (defn action
@@ -20,8 +22,11 @@
 (def bump (js/Audio. "bump.wav"))
 
 (defn about-panel []
-  [:div [:h1 "About"]])
-
+  [:div [:h1 "About"]
+  [re-com/hyperlink
+          :label            "Puzzle-1"
+          :tooltip-position :left-center
+          :on-click         #(re-frame/dispatch [::events/set-active-panel :puzzle-1])]])
 (defn home-panel []
   (.addEventListener js/document "keydown"  action)
   (if (= (:action @(re-frame/subscribe [::subs/location])) "bump")
