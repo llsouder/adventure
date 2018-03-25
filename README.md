@@ -5,6 +5,24 @@ A "toy" game written with clojurescript/re-frame.  Using svg and css.  Some rout
 I doubt the game is fun.  The purpose was to learn stuff about building web 
 apps.  I think for a serious game I would use play.js or some other framework.
 
+## Kick off an nRepl and figwheel.
+
+```
+user> (use 'figwheel-sidecar.repl-api)
+nil
+user> (start-figwheel!)
+Figwheel: Starting server at http://localhost:3449
+Figwheel: Watching build - dev
+Compiling "resources/public/js/repler.js" from ["src"]...
+Successfully compiled "resources/public/js/repler.js" in 2.06 seconds.
+#<SystemMap>
+user> (cljs-repl)
+Launching ClojureScript REPL for build: dev
+...
+...
+```
+To connect cider in spacemacs use: `, s c`.
+
 A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
 
 ## Development Mode
