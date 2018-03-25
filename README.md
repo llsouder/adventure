@@ -1,5 +1,10 @@
 # adventure
 
+A "toy" game written with clojurescript/re-frame.  Using svg and css.  Some routing with secretary and other fun stuff.
+
+I doubt the game is fun.  The purpose was to learn stuff about building web 
+apps.  I think for a serious game I would use play.js or some other framework.
+
 A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
 
 ## Development Mode
