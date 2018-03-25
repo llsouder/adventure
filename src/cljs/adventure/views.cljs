@@ -26,7 +26,8 @@
   [re-com/hyperlink
           :label            "Puzzle-1"
           :tooltip-position :left-center
-          :on-click         #(re-frame/dispatch [::events/set-active-panel :puzzle-1])]])
+   :on-click         #(re-frame/dispatch [::events/set-active-panel :puzzle-1])]])
+
 (defn home-panel []
   (.addEventListener js/document "keydown"  action)
   (if (= (:action @(re-frame/subscribe [::subs/location])) "bump")
@@ -41,11 +42,28 @@
      (tile/drawPlayer @(re-frame/subscribe [::subs/location]))]
    [:h3 (:action @(re-frame/subscribe [::subs/location]))]])
 
+(defn escape-panel []
+  [:div [:h1 "You have escaped."]
+   [re-com/hyperlink
+    :label            "continue"
+    :tooltip-position :left-center
+    :on-click         #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
+
+(defn die-panel []
+  [:div [:h1 "You are DEAD!"]
+   [re-com/hyperlink
+    :label            "Over"
+    :tooltip-position :left-center
+    :on-click         #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
+
 (defn- panels [panel-name]
+  (println "panels " panel-name)
   (case panel-name
     :home-panel [home-panel]
     :about-panel [about-panel]
     :puzzle-1 [guess/page]
+    :escape-panel [escape-panel]
+    :die-panel [die-panel]
     [home-panel]))
 
 (defn main-panel []

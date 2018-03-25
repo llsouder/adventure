@@ -14,13 +14,16 @@
       (println "you win"))
     (println "nope" answer @value)))
 
-(defn flip-tags [text]
-  [:div {:class "flip-container" :onClick #(set-hash! "/about") }
+(defn flip-tags
+  "text on the front and back of the panel and the location where
+  onclick will send the user."
+  [front-text back-text loc]
+  [:div {:class "flip-container" :onClick #(set-hash! loc) }
    [:div {:class "flipper"}
    [:div {:class "front"}
-    [:h1 text]]
+    [:h1 front-text]]
    [:div {:class "back"}
-    [:h1 "Back"]]]])
+    [:h1 back-text]]]])
 
 (defn page []
   (let [answer (rand-int 10)
@@ -30,9 +33,9 @@
    [re-com/throbber
     :size :large]
      [re-com/h-box
-      :children [(flip-tags 1)
-                 (flip-tags 2)
-                 (flip-tags 3)]]
+      :children [(flip-tags 1 "maybe" "/win")
+                 (flip-tags 2 "nope" "/die")
+                 (flip-tags 3 "maybe" "/die")]]
    [re-com/input-text
     :on-change #(reset! text-val %)
     :model text-val

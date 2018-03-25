@@ -29,4 +29,10 @@
     (println "help" (keyword (str "puzzle-" (:id params))))
     (re-frame/dispatch [::events/set-active-panel (keyword (str "puzzle-" (:id params)))])))
 
+(defroute "/escape" []
+  (re-frame/dispatch [::events/set-active-panel :escape-panel]))
+
+(defroute "/die" []
+  (re-frame/dispatch [::events/set-active-panel :die-panel]))
+
 (hook-browser-navigation!)
