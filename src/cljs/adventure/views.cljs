@@ -5,6 +5,7 @@
             [adventure.subs :as subs]
             [adventure.guess :as guess]
             [adventure.events :as events]
+            [adventure.routes :as routes]
             [adventure.tiles :as tile]))
 
 (defn action
@@ -22,14 +23,15 @@
 (def bump (js/Audio. "bump.wav"))
 
 (defn about-panel []
+  (routes/set-hash! "/about")
   [:div [:h1 "About"]
   [re-com/hyperlink
           :label            "Puzzle-1"
           :tooltip-position :left-center
-   :on-click         #(re-frame/dispatch [::events/set-active-panel :puzzle-1])]])
+          :on-click #(re-frame/dispatch [::events/set-active-panel :puzzle-1])]])
 
 (defn home-panel []
-  (.addEventListener js/document "keydown"  action)
+  (routes/set-hash! "/")
   (if (= (:action @(re-frame/subscribe [::subs/location])) "bump")
     (.play bump))
   [:div
@@ -43,6 +45,7 @@
    [:h3 (:action @(re-frame/subscribe [::subs/location]))]])
 
 (defn escape-panel []
+  (routes/set-hash! "/escape")
   [:div [:h1 "You have escaped."]
    [re-com/hyperlink
     :label            "continue"
@@ -50,14 +53,16 @@
     :on-click         #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
 
 (defn die-panel []
+  (routes/set-hash! "/die")
   [:div [:h1 "You are DEAD!"]
    [re-com/hyperlink
-    :label            "Over"
+    :label            "Start Over"
     :tooltip-position :left-center
-    :on-click         #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
+    :on-click
+    #((re-frame/dispatch [::events/initialize-db])
+      (re-frame/dispatch [::events/set-active-panel :home-panel]))]])
 
 (defn- panels [panel-name]
-  (println "panels " panel-name)
   (case panel-name
     :home-panel [home-panel]
     :about-panel [about-panel]
@@ -67,6 +72,7 @@
     [home-panel]))
 
 (defn main-panel []
+  (.addEventListener js/document "keydown"  action)
   (let [active-panel (re-frame/subscribe [::subs/active-panel])]
     [re-com/v-box
      :height "100%"

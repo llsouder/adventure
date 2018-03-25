@@ -17,15 +17,29 @@
 (defn flip-tags
   "text on the front and back of the panel and the location where
   onclick will send the user."
-  [front-text back-text loc]
-  [:div {:class "flip-container" :onClick #(set-hash! loc) }
+  [front-text back-text onclick]
+  [:div {:class "flip-container" :onClick onclick}
    [:div {:class "flipper"}
    [:div {:class "front"}
     [:h1 front-text]]
    [:div {:class "back"}
     [:h1 back-text]]]])
 
+(defn escape
+  [num]
+  (flip-tags num "?" #(set-hash! "/escape")))
+
+(defn die
+  [num]
+  (flip-tags num "?" #(set-hash! "/die")))
+
+(defn nothing
+  "neither death nor escape."
+  [num]
+  (flip-tags num "?" ""))
+
 (defn page []
+  (set-hash! "/puzzle/1")
   (let [answer (rand-int 10)
         text-val (reagent/atom "")]
     (set-hash! "/puzzle-1")
@@ -33,9 +47,10 @@
    [re-com/throbber
     :size :large]
      [re-com/h-box
-      :children [(flip-tags 1 "maybe" "/win")
-                 (flip-tags 2 "nope" "/die")
-                 (flip-tags 3 "maybe" "/die")]]
+      :children [(escape 1)
+                 (die 2)
+                 (nothing 3)]]
+
    [re-com/input-text
     :on-change #(reset! text-val %)
     :model text-val

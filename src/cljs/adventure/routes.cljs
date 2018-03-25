@@ -36,3 +36,6 @@
   (re-frame/dispatch [::events/set-active-panel :die-panel]))
 
 (hook-browser-navigation!)
+
+(defn set-hash! [loc]
+  (set! (.-hash js/window.location) loc))

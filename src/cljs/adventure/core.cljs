@@ -21,3 +21,8 @@
   (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)
   (mount-root))
+
+;;(defn reset-game
+;;  []
+;;  (re-frame/dispatch-sync [::events/initialize-db])
+;;  (re-frame/dispatch-sync [::events/set-active-panel :home-panel]))

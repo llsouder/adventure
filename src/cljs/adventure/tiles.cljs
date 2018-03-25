@@ -1,17 +1,21 @@
 (ns adventure.tiles
-  (:require [re-frame.core :as re-frame]))
+  (:require [adventure.routes :as routes]
+            [re-frame.core :as re-frame]))
 
 (def W 50)
 (def WSTR (str W))
 (def H 50)
 (def HSTR (str H))
 
+;;x is nothing
+;;g gray dungeon
+;;t a trap
 (def tiles         [["x" "x" "x" "x" "x" "g" "g"]
                     ["g" "g" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
-                    ["g" "x" "g" "g" "g" "g" "x"]
+                    ["g" "x" "g" "g" "t" "g" "x"]
                     ["g" "x" "x" "x" "x" "x" "x"]
                     ["g" "g" "g" "g" "x" "x" "x"]
                     ["g" "g" "g" "g" "x" "x" "x"]
@@ -32,7 +36,7 @@
   [abbr]
   (case abbr
     "r" "red"
-    "g" "gray"
+    ("g" "t") "gray"
     "x" "green" ;;default
     abbr))
 
@@ -81,7 +85,9 @@
   (let [tiles (:tiles board)
         tilerow  (tiles y)
         tile (tilerow x)]
-    (= tile "g")))
+    (if (= tile "t")
+      (routes/set-hash! "/puzzle/1")
+      (= tile "g"))))
 
 (defn valid-move?
   "Return true if new position is on the board, i.e. coords are >= 0."
