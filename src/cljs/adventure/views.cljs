@@ -22,16 +22,29 @@
 
 (def bump (js/Audio. "bump.wav"))
 
+(defn error-panel []
+  [:div [:h1 "error! error! panel not found"]
+   [re-com/hyperlink
+    :label            "restart"
+    :tooltip-position :left-center
+    :on-click #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
+
+(defn prize-panel []
+  [:div [:h1 "GOLD!"]
+   [re-com/hyperlink
+    :label            "home"
+    :tooltip-position :left-center
+    :on-click #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
+
 (defn about-panel []
   (routes/set-hash! "/about")
   [:div [:h1 "About"]
   [re-com/hyperlink
-          :label            "Puzzle-1"
+          :label            "Home"
           :tooltip-position :left-center
-          :on-click #(re-frame/dispatch [::events/set-active-panel :puzzle-1])]])
+          :on-click #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
 
 (defn home-panel []
-  (routes/set-hash! "/")
   (if (= (:action @(re-frame/subscribe [::subs/location])) "bump")
     (.play bump))
   [:div
@@ -69,7 +82,8 @@
     :puzzle-1 [guess/page]
     :escape-panel [escape-panel]
     :die-panel [die-panel]
-    [home-panel]))
+    :prize-panel [prize-panel]
+    [error-panel]))
 
 (defn main-panel []
   (.addEventListener js/document "keydown"  action)

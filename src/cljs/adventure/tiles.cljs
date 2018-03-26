@@ -1,5 +1,6 @@
 (ns adventure.tiles
   (:require [adventure.routes :as routes]
+            [adventure.events :as events]
             [re-frame.core :as re-frame]))
 
 (def W 50)
@@ -10,8 +11,9 @@
 ;;x is nothing
 ;;g gray dungeon
 ;;t a trap
+;;p prize
 (def tiles         [["x" "x" "x" "x" "x" "g" "g"]
-                    ["g" "g" "g" "x" "x" "g" "x"]
+                    ["g" "p" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
@@ -37,6 +39,7 @@
   (case abbr
     "r" "red"
     ("g" "t") "gray"
+    "p" "yellow"
     "x" "green" ;;default
     abbr))
 
@@ -80,13 +83,19 @@
         y (+ (* H (:y location)) (/ H 2))]
     (drawPlayerAt x y)))
 
+(defn special-action [panel]
+  (re-frame/dispatch [::events/set-active-panel panel])
+  true)
+
 (defn check-board
   [x y board]
   (let [tiles (:tiles board)
         tilerow  (tiles y)
         tile (tilerow x)]
-    (if (= tile "t")
-      (routes/set-hash! "/puzzle/1")
+    (case tile
+      ;;"t" (routes/set-hash! "/puzzle/1")
+      "t" (special-action :puzzle-1)
+      "p" (special-action :prize-panel)
       (= tile "g"))))
 
 (defn valid-move?
