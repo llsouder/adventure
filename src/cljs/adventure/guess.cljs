@@ -3,7 +3,6 @@
             [re-frame.core :as re-frame] ;;need re-frame for :ontouchstart to work.
             [reagent.core :as reagent]))
 
-
 (defn set-hash! [loc]
   (set! (.-hash js/window.location) loc))
 
@@ -39,7 +38,6 @@
   (flip-tags num "?" ""))
 
 (defn page []
-  (set-hash! "/puzzle/1")
   (let [answer (rand-int 10)
         text-val (reagent/atom "")]
     (set-hash! "/puzzle-1")
