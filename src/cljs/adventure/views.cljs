@@ -8,11 +8,15 @@
             [adventure.routes :as routes]
             [adventure.tiles :as tile]))
 
+(defn initialize-game
+  []
+  (re-frame/dispatch [::events/initialize-db])
+  (re-frame/dispatch [::events/set-active-panel :home-panel]))
+
 (defn action
   [event]
   (let [key-code (.-keyCode event)]
-    (do
-      (re-frame/dispatch [:location key-code]))))
+      (re-frame/dispatch [:location key-code])))
 
 (defn title []
   (let [name (re-frame/subscribe [::subs/name])]
@@ -47,15 +51,18 @@
 (defn home-panel []
   (if (= (:action @(re-frame/subscribe [::subs/location])) "bump")
     (.play bump))
-  [:div
-    (title)
-    [:svg {:width "800"
-           :height "600"
-           :viewBox "0 0 800 600"
-           :xmlns "http://www.w3.org/2000/svg"}
+   [re-com/v-box
+    :height "100%"
+    :children [(title)
+      [:svg {:width "800"
+             :height "600"
+             :viewBox "0 0 800 600"
+             :xmlns "http://www.w3.org/2000/svg"}
      (tile/test-board)
      (tile/drawPlayer @(re-frame/subscribe [::subs/location]))]
-   [:h3 (:action @(re-frame/subscribe [::subs/location]))]])
+   [re-com/button
+    :label "Restart"
+    :on-click initialize-game]]])
 
 (defn escape-panel []
   (routes/set-hash! "/escape")
@@ -71,9 +78,7 @@
    [re-com/hyperlink
     :label            "Start Over"
     :tooltip-position :left-center
-    :on-click
-    #((re-frame/dispatch [::events/initialize-db])
-      (re-frame/dispatch [::events/set-active-panel :home-panel]))]])
+    :on-click initialize-game]])
 
 (defn- panels [panel-name]
   (case panel-name
