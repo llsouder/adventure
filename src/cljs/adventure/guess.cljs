@@ -1,15 +1,12 @@
 (ns adventure.guess
   (:require [re-com.core :as re-com]
             [re-frame.core :as re-frame] ;;need re-frame for :ontouchstart to work.
-            [reagent.core :as reagent]))
-
-(defn set-hash! [loc]
-  (set! (.-hash js/window.location) loc))
+            [reagent.core :as reagent]
+            [adventure.events :as event]))
 
 (defn check-value [answer value]
   (if (= (str answer) @value)
     (do
-      (set-hash! "/")
       (println "you win"))
     (println "nope" answer @value)))
 
@@ -21,16 +18,18 @@
    [:div {:class "flipper"}
    [:div {:class "front"}
     [:h1 front-text]]
-   [:div {:class "back"}
+   [:div {:class "back"}/
     [:h1 back-text]]]])
 
 (defn escape
   [num]
-  (flip-tags num "?" #(set-hash! "/escape")))
+  (flip-tags num "?" #(re-frame/dispatch
+                       [::event/set-active-panel :escape-panel])))
 
 (defn die
   [num]
-  (flip-tags num "?" #(set-hash! "/die")))
+  (flip-tags num "?" #(re-frame/dispatch
+                       [::event/set-active-panel :die-panel])))
 
 (defn nothing
   "neither death nor escape."
@@ -40,7 +39,6 @@
 (defn page []
   (let [answer (rand-int 10)
         text-val (reagent/atom "")]
-    (set-hash! "/puzzle-1")
     [:div [:h1 "Find your way out."]
    [re-com/throbber
     :size :large]

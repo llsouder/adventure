@@ -65,7 +65,6 @@
     :on-click initialize-game]]]))
 
 (defn escape-panel []
-  (routes/set-hash! "/escape")
   [:div [:h1 "You have escaped."]
    [re-com/hyperlink
     :label            "continue"
@@ -73,7 +72,6 @@
     :on-click         #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
 
 (defn die-panel []
-  (routes/set-hash! "/die")
   [:div [:h1 "You are DEAD!"]
    [re-com/hyperlink
     :label            "Start Over"
