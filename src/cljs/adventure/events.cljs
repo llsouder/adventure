@@ -21,3 +21,8 @@
  ::update-board
  (fn [db [_ board]]
    (assoc db :board board)))
+
+(re-frame/reg-event-db
+ ::update-gold
+ (fn [db [_ gold-func]]
+   (assoc db :gold (gold-func (:gold db)))))

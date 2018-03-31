@@ -41,6 +41,7 @@
                              [:location :action]
                              #(str "gold"))]
     (re-frame/dispatch [::events/update-board updated-board])
+    (re-frame/dispatch [::events/update-gold inc])
     return-db))
 
 (defn checkandupdate

@@ -25,3 +25,13 @@
  ::update-board
  (fn [db _]
    (:board db)))
+
+(re-frame/reg-sub
+ ::gold
+ (fn [db _]
+   (:gold db)))
+
+(re-frame/reg-sub
+ ::health
+ (fn [db _]
+   (:health db)))

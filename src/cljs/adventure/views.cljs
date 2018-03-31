@@ -18,7 +18,7 @@
   [event]
   (let [key-code (.-keyCode event)]
     ;;sends the whole database to game
-      (re-frame/dispatch [:location key-code])))
+    (re-frame/dispatch [:location key-code])))
 
 (defn title []
   (let [name (re-frame/subscribe [::subs/name])]
@@ -26,12 +26,32 @@
      :label @name
      :level :level1]))
 
+(defn health-label []
+  (let [health (re-frame/subscribe [::subs/health])]
+    [:div
+     [re-com/title
+      :label "health" 
+      :level :level2]
+     [re-com/title
+     :label @health
+      :level :level3]]))
+
+(defn gold-label []
+  (let [gold (re-frame/subscribe [::subs/gold])]
+    [:div
+     [re-com/title
+      :label "gold" 
+      :level :level2]
+     [re-com/title
+      :label @gold
+      :level :level3]]))
+
 (def bump (js/Audio. "bump.wav"))
 (def gold (js/Audio. "gold.wav"))
 
 (defn error-panel [panel-name]
   [:div [:h1 "error! error! panel not found"]
-        [:h1 (str "\"" panel-name "\"")]
+   [:h1 (str "\"" panel-name "\"")]
    [re-com/hyperlink
     :label            "restart"
     :tooltip-position :left-center
@@ -40,29 +60,38 @@
 (defn about-panel []
   (routes/set-hash! "/about")
   [:div [:h1 "About"]
-  [re-com/hyperlink
-          :label            "Home"
-          :tooltip-position :left-center
-          :on-click #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
+   [re-com/hyperlink
+    :label            "Home"
+    :tooltip-position :left-center
+    :on-click #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
+
+(defn sidebar []
+  [re-com/v-box
+   :height "100%"
+   :children [(health-label)
+              (gold-label)
+              [re-com/button
+               :label "Restart"
+               :on-click initialize-game]]])
 
 (defn home-panel []
   (let [board @(re-frame/subscribe [::subs/update-board])]
-  (if (= (:action @(re-frame/subscribe [::subs/location])) "bump")
-    (.play bump))
-  (if (= (:action @(re-frame/subscribe [::subs/location])) "gold")
-    (.play gold))
-   [re-com/v-box
-    :height "100%"
-    :children [(title)
-      [:svg {:width "800"
-             :height "600"
-             :viewBox "0 0 800 600"
-             :xmlns "http://www.w3.org/2000/svg"}
-     (tile/draw-board board)
-     (tile/drawPlayer @(re-frame/subscribe [::subs/location]))]
-   [re-com/button
-    :label "Restart"
-    :on-click initialize-game]]]))
+    (if (= (:action @(re-frame/subscribe [::subs/location])) "bump")
+      (.play bump))
+    (if (= (:action @(re-frame/subscribe [::subs/location])) "gold")
+      (.play gold))
+    [re-com/v-box
+     :height "100%"
+     :children [(title)
+                [re-com/h-box
+                 :width "450px"
+                 :children [[:svg {:width "800px"
+                                   :height "600px"
+                                   :viewBox "0 0 800px 600px"
+                                   :xmlns "http://www.w3.org/2000/svg"}
+                             (tile/draw-board board)
+                             (tile/drawPlayer @(re-frame/subscribe [::subs/location]))]
+                            (sidebar)]]]]))
 
 (defn escape-panel []
   [:div [:h1 "You have escaped."]
@@ -79,7 +108,7 @@
     :on-click initialize-game]])
 
 (defn- panels [panel-name]
-    (println "panel name" panel-name)
+  (println "panel name" panel-name)
   (case panel-name
     :home-panel [home-panel]
     :about-panel [about-panel]
