@@ -18,9 +18,9 @@
                     ["g" "x" "x" "x" "x" "x" "x"]
                     ["g" "g" "g" "g" "x" "x" "x"]
                     ["g" "g" "g" "g" "x" "x" "x"]
-                    ["g" "g" "g" "g" "x" "x" "x"]
-                    ["g" "g" "g" "g" "x" "x" "x"]
-                    ["g" "g" "g" "g" "x" "x" "x"]])
+                    ["g" "g" "p" "g" "x" "x" "x"]
+                    ["g" "g" "p" "p" "p" "x" "x"]
+                    ["g" "g" "p" "g" "p" "x" "x"]])
 
 (defn make-board
   [tiles]
