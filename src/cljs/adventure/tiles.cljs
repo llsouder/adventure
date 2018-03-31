@@ -1,7 +1,4 @@
-(ns adventure.tiles
-  (:require [adventure.routes :as routes]
-            [adventure.events :as events]
-            [re-frame.core :as re-frame]))
+(ns adventure.tiles)
 
 (def W 50)
 (def WSTR (str W))
@@ -12,7 +9,7 @@
 ;;g gray dungeon
 ;;t a trap
 ;;p prize
-(def tiles         [["x" "x" "x" "x" "x" "g" "g"]
+(def tiles         [["x" "x" "x" "x" "x" "p" "g"]
                     ["g" "p" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
                     ["g" "x" "g" "x" "x" "g" "x"]
@@ -30,8 +27,6 @@
   {:x-size (count (tiles 1))
    :y-size (count tiles)
    :tiles tiles})
-
-(def board (make-board tiles))
 
 (defn pick
   "Pick color using a single character.  This makes the board data more readable."
@@ -65,7 +60,7 @@
   (let [tiles (:tiles board)]
   (map-indexed (fn [idx row] (draw-row row idx)) tiles)))
 
-(defn test-board [] (draw-board board))
+(defn test-board [] (draw-board (make-board tiles)))
 
 (defn drawPlayerAt
   "return the player svg on the board"
@@ -83,51 +78,10 @@
         y (+ (* H (:y location)) (/ H 2))]
     (drawPlayerAt x y)))
 
-(defn special-action [panel]
-  (re-frame/dispatch [::events/set-active-panel panel])
-  true)
 
-(defn check-board
-  [x y board]
-  (let [tiles (:tiles board)
-        tilerow  (tiles y)
-        tile (tilerow x)]
-    (case tile
-      ;;"t" (routes/set-hash! "/puzzle/1")
-      "t" (special-action :puzzle-1)
-      "p" (special-action :prize-panel)
-      (= tile "g"))))
-
-(defn valid-move?
-  "Return true if new position is on the board, i.e. coords are >= 0."
-  [location axis f board]
-  (let [updatedmap (update-in location [axis] f)
-        newvals (vals (dissoc updatedmap :action))
-        positive (every? #(>= % 0) newvals)
-        x (:x updatedmap)
-        y (:y updatedmap)
-        withingrid (and (< x (:x-size board)) (< y (:y-size board)))]
-    (and positive withingrid)))
-
-(defn checkandupdate
-  "the db from the event, the axis is :x or :y, and f is inc or dec."
-  [db axis f]
-  (if (valid-move? (:location db) axis f board)
-    (let [newdb (update-in (update-in db [:location axis] f) [:location :action] #(str "none"))]
-      (if (check-board (get-in newdb [:location :x])
-                       (get-in newdb [:location :y])
-                       board)
-      newdb
-      (update-in db [:location :action] #(str "bump"))))
-  (update-in db [:location :action] #(str "error"))))
-
-(re-frame/reg-event-db
- :location
- (fn  [db [_ keycode]]
-   (case keycode
-     (87 75) (checkandupdate db :y dec) ;;up w k
-     (83 74) (checkandupdate db :y inc) ;;down s j
-     (68 76) (checkandupdate db :x inc) ;;right d l
-     (65 72) (checkandupdate db :x dec) ;;left a h
-     (do (println (str "unsupported " keycode))
-         db))))
+(defn reset-tile
+  "return tiles with xy set to g for empty."
+  [tiles tile-loc]
+  (let [x (:x tile-loc)
+        y (:y tile-loc)]
+  (assoc tiles y (assoc (tiles y) x "g"))))

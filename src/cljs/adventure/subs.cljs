@@ -20,3 +20,8 @@
  ::active-panel
  (fn [db _]
    (:active-panel db)))
+
+(re-frame/reg-sub
+ ::update-board
+ (fn [db _]
+   (:board db)))
