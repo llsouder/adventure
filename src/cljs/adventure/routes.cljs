@@ -10,9 +10,9 @@
 (defn hook-browser-navigation! []
   (doto (History.)
     (gevents/listen
-     EventType/NAVIGATE
-     (fn [event]
-       (secretary/dispatch! (.-token event))))
+      EventType/NAVIGATE
+      (fn [event]
+        (secretary/dispatch! (.-token event))))
     (.setEnabled true)))
 
 (defn app-routes []
@@ -20,20 +20,13 @@
   ;; --------------------
   ;; define routes here
   (defroute "/" []
-    (re-frame/dispatch [::events/set-active-panel :home-panel]))
+            (re-frame/dispatch [::events/set-active-panel :home-panel]))
 
   (defroute "/about" []
-    (re-frame/dispatch [::events/set-active-panel :about-panel]))
+            (re-frame/dispatch [::events/set-active-panel :about-panel]))
 
   (defroute "/puzzle/:id" {:as params}
-    (println "help" (keyword (str "puzzle-" (:id params))))
-    (re-frame/dispatch [::events/set-active-panel (keyword (str "puzzle-" (:id params)))])))
-
-(defroute "/escape" []
-  (re-frame/dispatch [::events/set-active-panel :escape-panel]))
-
-(defroute "/die" []
-  (re-frame/dispatch [::events/set-active-panel :die-panel]))
+            (re-frame/dispatch [::events/set-active-panel (keyword (str "puzzle-" (:id params)))])))
 
 (hook-browser-navigation!)
 

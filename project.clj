@@ -28,7 +28,7 @@
                    [secretary "1.2.3"]
                    [com.cemerick/piggieback "0.2.2"]]
 
-    :plugins      [[lein-doo "0.1.8"]]}}
+    :plugins      [[lein-doo "0.1.10"]]}}
 
   :cljsbuild
   {:builds

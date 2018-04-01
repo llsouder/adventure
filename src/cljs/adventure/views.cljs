@@ -30,17 +30,17 @@
   (let [health (re-frame/subscribe [::subs/health])]
     [:div
      [re-com/title
-      :label "health" 
+      :label "health"
       :level :level2]
      [re-com/title
-     :label @health
+      :label @health
       :level :level3]]))
 
 (defn gold-label []
   (let [gold (re-frame/subscribe [::subs/gold])]
     [:div
      [re-com/title
-      :label "gold" 
+      :label "gold"
       :level :level2]
      [re-com/title
       :label @gold
@@ -53,7 +53,7 @@
   [:div [:h1 "error! error! panel not found"]
    [:h1 (str "\"" panel-name "\"")]
    [re-com/hyperlink
-    :label            "restart"
+    :label "restart"
     :tooltip-position :left-center
     :on-click #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
 
@@ -61,7 +61,7 @@
   (routes/set-hash! "/about")
   [:div [:h1 "About"]
    [re-com/hyperlink
-    :label            "Home"
+    :label "Home"
     :tooltip-position :left-center
     :on-click #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
 
@@ -85,10 +85,10 @@
      :children [(title)
                 [re-com/h-box
                  :width "450px"
-                 :children [[:svg {:width "800px"
-                                   :height "600px"
+                 :children [[:svg {:width   "800px"
+                                   :height  "600px"
                                    :viewBox "0 0 800px 600px"
-                                   :xmlns "http://www.w3.org/2000/svg"}
+                                   :xmlns   "http://www.w3.org/2000/svg"}
                              (tile/draw-board board)
                              (tile/drawPlayer @(re-frame/subscribe [::subs/location]))]
                             (sidebar)]]]]))
@@ -96,19 +96,18 @@
 (defn escape-panel []
   [:div [:h1 "You have escaped."]
    [re-com/hyperlink
-    :label            "continue"
+    :label "continue"
     :tooltip-position :left-center
-    :on-click         #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
+    :on-click #(re-frame/dispatch [::events/set-active-panel :home-panel])]])
 
 (defn die-panel []
   [:div [:h1 "You are DEAD!"]
    [re-com/hyperlink
-    :label            "Start Over"
+    :label "Start Over"
     :tooltip-position :left-center
     :on-click initialize-game]])
 
 (defn- panels [panel-name]
-  (println "panel name" panel-name)
   (case panel-name
     :home-panel [home-panel]
     :about-panel [about-panel]
@@ -118,7 +117,7 @@
     [error-panel panel-name]))
 
 (defn main-panel []
-  (.addEventListener js/document "keydown"  action)
+  (.addEventListener js/document "keydown" action)
   (let [active-panel-db (re-frame/subscribe [::subs/active-panel])]
     [re-com/v-box
      :height "100%"

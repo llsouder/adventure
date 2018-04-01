@@ -12,7 +12,7 @@
 (defn check-board
   [x y board]
   (let [tiles (:tiles board)
-        tilerow  (tiles y)
+        tilerow (tiles y)
         tile (tilerow x)]
     (case tile
       "t" (special-action :puzzle-1)
@@ -49,14 +49,14 @@
   [db axis f]
   (if (valid-move? (:location db) axis f (:board db))
     (let [newdb (update-in
-                 (update-in db [:location axis] f)
-                 [:location :action] #(str "none"))
+                  (update-in db [:location axis] f)
+                  [:location :action] #(str "none"))
           board (:board db)
           check (check-board (get-in newdb [:location :x])
-                       (get-in newdb [:location :y])
-                       board)]
+                             (get-in newdb [:location :y])
+                             board)]
       (case check
-        "gold" (found-gold db newdb) 
+        "gold" (found-gold db newdb)
         false (update-in db [:location :action] #(str "bump"))
         true newdb))
     (update-in db [:location :action] #(str "error"))))
@@ -65,12 +65,12 @@
 ;;FIXME I don't think I need the whole database, but I
 ;;should subscribe for the things I am interested in using.
 (re-frame/reg-event-db
- :location
- (fn  [db [_ keycode]]
-   (case keycode
-     (87 75) (checkandupdate db :y dec) ;;up w k
-     (83 74) (checkandupdate db :y inc) ;;down s j
-     (68 76) (checkandupdate db :x inc) ;;right d l
-     (65 72) (checkandupdate db :x dec) ;;left a h
-     (do (println (str "unsupported " keycode))
-         db))))
+  :location
+  (fn [db [_ keycode]]
+    (case keycode
+      (87 75) (checkandupdate db :y dec)                    ;;up w k
+      (83 74) (checkandupdate db :y inc)                    ;;down s j
+      (68 76) (checkandupdate db :x inc)                    ;;right d l
+      (65 72) (checkandupdate db :x dec)                    ;;left a h
+      (do (println (str "unsupported " keycode))
+          db))))

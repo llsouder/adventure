@@ -3,26 +3,26 @@
             [adventure.db :as db]))
 
 (re-frame/reg-event-db
- ::initialize-db
- (fn  [_ _]
-   db/default-db))
+  ::initialize-db
+  (fn [_ _]
+    db/default-db))
 
 (re-frame/reg-event-db
- :keypress
- (fn  [db [_ keycode]]
-   (assoc db :keypress keycode)))
+  :keypress
+  (fn [db [_ keycode]]
+    (assoc db :keypress keycode)))
 
 (re-frame/reg-event-db
- ::set-active-panel
- (fn [db [_ active-panel]]
-   (assoc db :active-panel active-panel)))
+  ::set-active-panel
+  (fn [db [_ active-panel]]
+    (assoc db :active-panel active-panel)))
 
 (re-frame/reg-event-db
- ::update-board
- (fn [db [_ board]]
-   (assoc db :board board)))
+  ::update-board
+  (fn [db [_ board]]
+    (assoc db :board board)))
 
 (re-frame/reg-event-db
- ::update-gold
- (fn [db [_ gold-func]]
-   (assoc db :gold (gold-func (:gold db)))))
+  ::update-gold
+  (fn [db [_ gold-func]]
+    (assoc db :gold (gold-func (:gold db)))))
