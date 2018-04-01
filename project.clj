@@ -5,13 +5,14 @@
                  [re-frame "0.10.4"]
                  [com.andrewmcveigh/cljs-time "0.5.0"]
                  [org.clojure/core.async "0.2.391"]
-                 [re-com "2.1.0"]]
+                 [re-com "2.1.0"]
+                 [figwheel-sidecar "0.5.0"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
   :min-lein-version "2.5.3"
 
-  :source-paths ["src/clj"]
+  :source-paths ["src/clj" "script"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"
                                     "test/js"]
@@ -27,8 +28,7 @@
                    [secretary "1.2.3"]
                    [com.cemerick/piggieback "0.2.2"]]
 
-    :plugins      [[lein-figwheel "0.5.13"]
-                   [lein-doo "0.1.8"]]}}
+    :plugins      [[lein-doo "0.1.8"]]}}
 
   :cljsbuild
   {:builds
